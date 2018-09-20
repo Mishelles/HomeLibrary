@@ -4,8 +4,8 @@ class Book {
         this.author = author;
         this.publication_date = publication_date;
         this.image_url = image_url;
-        this.reader = undefined;
-        this.expiration_date = undefined;
+        this.reader = null;
+        this.expiration_date = null;
     }
 }
 

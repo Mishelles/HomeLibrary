@@ -6,7 +6,7 @@ class Library {
     constructor() {
         let books = {}
         try {
-            books = JSON.parse(fs.readFileSync('../database.json'));
+            books = JSON.parse(fs.readFileSync('database.json'))['books'];
         } catch {
             console.log("Error while reading file");
         }
@@ -15,6 +15,10 @@ class Library {
 
     static generateId() {
         return (Math.random().toString(16).slice(2) + (new Date()).getTime()).toString();
+    }
+
+    getAllBooks() {
+        return this.books;
     }
 
     createBook(title, author, publication_date, image_url = 'blank') {
@@ -43,19 +47,8 @@ class Library {
     giveForRent(id, reader, date) {
         let book = this.getBook(id);
         if (book != undefined) {
-            if (book.reader != undefined) {
+            if (book.reader == null) {
                 this.updateBook(id, 'reader', reader);
-                this.updateBook(id, 'expiration_date', date);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    prolongBook(id, date) {
-        let book = this.getBook(id);
-        if (book != undefined) {
-            if (book.expiration_date != undefined) {
                 this.updateBook(id, 'expiration_date', date);
                 return true;
             }
@@ -66,15 +59,15 @@ class Library {
     returnBook(id) {
         let book = this.getBook(id);
         if (book != undefined) {
-            this.updateBook(id, 'reader', undefined);
-            this.updateBook(id, 'expiration_date', undefined);
+            this.updateBook(id, 'reader', null);
+            this.updateBook(id, 'expiration_date', null);
         }
     }
 
     checkDate(id) {
         let book = this.getBook(id);
         if (book != undefined) {
-            if (book.expiration_date < (new Date).getDate()) {
+            if ((book.reader != null) && (book.expiration_date < Date.now())) {
                 return "Expired";
             } else {
                 return "Not expired";
@@ -94,8 +87,8 @@ class Library {
 
     getOnlyExpiredBooks() {
         let expired_books = {};
-        for (id in this.books) {
-            if (this.checkDate(id)) {
+        for (let id in this.books) {
+            if (this.checkDate(id) == 'Expired') {
                 expired_books[id] = this.books[id];
             }
         }
@@ -103,17 +96,17 @@ class Library {
     }
 
     getOnlyInStockBooks() {
-        let books_in_stock = {};
-        for (id in this.books) {
-            if (this.books[id].reader == undefined) {
-                books_in_stock[id] = this.books[id];
+        let books = {};
+        for (let id in this.books) {
+            if (this.books[id].reader == null) {
+                books[id] = this.books[id];
             }
         }
-        return books_in_stock;
+        return books;
     }
 
     save() {
-        fs.writeFile('../database.json', JSON.stringify(this), (err) => {
+        fs.writeFile('database.json', JSON.stringify(this), (err) => {
             if (err) throw err;
             console.log('The file has been saved!');
         });
