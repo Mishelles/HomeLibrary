@@ -3,6 +3,8 @@ const server = express();
 const bodyParser = require('body-parser');
 const routes = require("./api-routes");
 
+server.engine('pug', require('pug').__express)
+
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
@@ -13,6 +15,10 @@ server.use('/api/', routes)
 */
 server.set("view engine", "pug");
 server.set("views", `./views`);
+
+server.get('/', (req, res, next) => {
+    res.render("listview");
+});
 
 
 server.listen(3000);
