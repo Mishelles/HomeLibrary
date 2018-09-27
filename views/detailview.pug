@@ -1,24 +1,13 @@
-html
-    head
-        meta(charset="utf-8")
-        title Домашняя библиотека
-        link(rel="stylesheet", href="/public/css/style.css")
-    body
-        #prompt-form-container
-            form#prompt-form
-                #prompt-message
-                input(name='text', type='text')
-                input(type='submit', value='Ок')
-                input(type='button', name='cancel', value='Отмена')
+extends base.pug
+block content
+    div(class="w3-container w3-center")
+        h1 Список книг
+    div(class="w3-container w3-center")
+        button(id="showAllBooks") Все книги
+        button(id="showInStockBooks") Книги в наличии
+        button(id="showExpiredBooks") Просроченные
+        br
+        button(id="addBookButton") Добавить книгу
+    div(class="w3-container w3-center", id="books-container")
 
-        div(class="w3-container w3-center")
-            h1 Список книг
-        div(class="w3-container w3-center")
-            button(id="showAllBooks") Все книги
-            button(id="showInStockBooks") Книги в наличии
-            button(id="showExpiredBooks") Просроченные
-            br
-            button(id="addBookButton") Добавить книгу
-        div(class="w3-container w3-center", id="books-container")
-
-        script(src="/public/js/main.js")
+    script(src="/public/js/main.js")

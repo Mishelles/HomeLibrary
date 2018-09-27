@@ -21,8 +21,8 @@ class Library {
         return this.books;
     }
 
-    createBook(title, author, publication_date, image_url = 'blank') {
-        let book = new book_module.Book(title, author, publication_date, image_url = 'blank');
+    createBook(title, author, publication_date, image_url = '/public/images/image-square.png') {
+        let book = new book_module.Book(title, author, publication_date, image_url);
         this.books[Library.generateId()] = book;
         this.save();
     }

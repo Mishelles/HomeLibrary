@@ -19,7 +19,11 @@ router.get('/books/:id', (req, res, next) => {
 });
 
 router.post('/books', (req, res, next) => {
-    homeLibrary.createBook(req.body.title, req.body.author, req.body.publication_date, req.body.image_url);
+    if (req.body.image_url != "") {
+        homeLibrary.createBook(req.body.title, req.body.author, req.body.publication_date, req.body.image_url);
+    } else {
+        homeLibrary.createBook(req.body.title, req.body.author, req.body.publication_date, '/public/images/image-square.png');
+    }
     res.sendStatus(200);
     next();
 });
