@@ -7,6 +7,8 @@ router.get('/books', (req, res, next) => {
         res.json(homeLibrary.getOnlyInStockBooks());
     } else if ('expired' in req.query) {
         res.json(homeLibrary.getOnlyExpiredBooks());
+    } else if ('sort_by_date' in req.query) {
+        res.json(homeLibrary.getBooksByDate());
     } else {
         res.json(homeLibrary.getAllBooks());
     }
@@ -19,7 +21,11 @@ router.get('/books/:id', (req, res, next) => {
 });
 
 router.post('/books', (req, res, next) => {
-    homeLibrary.createBook(req.body.title, req.body.author, req.body.publication_date, req.body.image_url);
+    if (req.body.image_url != "") {
+        homeLibrary.createBook(req.body.title, req.body.author, req.body.publication_date, req.body.image_url);
+    } else {
+        homeLibrary.createBook(req.body.title, req.body.author, req.body.publication_date, '/public/images/image-square.png');
+    }
     res.sendStatus(200);
     next();
 });

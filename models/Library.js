@@ -7,7 +7,7 @@ class Library {
         let books = {}
         try {
             books = JSON.parse(fs.readFileSync('database.json'))['books'];
-        } catch {
+        } catch(e) {
             console.log("Error while reading file");
         }
         this.books = books;
@@ -21,8 +21,8 @@ class Library {
         return this.books;
     }
 
-    createBook(title, author, publication_date, image_url = 'blank') {
-        let book = new book_module.Book(title, author, publication_date, image_url = 'blank');
+    createBook(title, author, publication_date, image_url = '/public/images/image-square.png') {
+        let book = new book_module.Book(title, author, publication_date, image_url);
         this.books[Library.generateId()] = book;
         this.save();
     }
@@ -93,6 +93,18 @@ class Library {
             }
         }
         return expired_books;
+    }
+
+    getBooksByDate() {
+        return this.books.sort(function(a, b) {
+            if ((a.expiration_date == null) || (b.expiration_date == null)) return 0;
+            if (parseInt(a.expiration_date) > parseInt(b.expiration_date)) {
+                return 1;
+            }
+            if (parseInt(a.expiration_date) < parseInt(b.expiration_date)) {
+                return -1;
+            }
+        });
     }
 
     getOnlyInStockBooks() {

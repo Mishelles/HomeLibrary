@@ -1,24 +1,64 @@
-html
-    head
-        meta(charset="utf-8")
-        title Домашняя библиотека
-        link(rel="stylesheet", href="/public/css/style.css")
-    body
-        #prompt-form-container
-            form#prompt-form
-                #prompt-message
-                input(name='text', type='text')
-                input(type='submit', value='Ок')
-                input(type='button', name='cancel', value='Отмена')
+extends base.pug
+block content
+    div(class="w3-container w3-center")
+        h1 Домашняя библиотека - список книг
+    div(class="w3-container w3-padding")
+        button#showAllBooks(class="w3-btn w3-ripple w3-white w3-border w3-margin") Все книги
+        button#showInStockBooks(class="w3-btn w3-ripple w3-blue w3-border w3-margin") Книги в наличии
+        button#showExpiredBooks(class="w3-btn w3-ripple w3-red w3-border w3-margin") Просроченные
+        button#addBookButton(class="w3-btn w3-ripple w3-green w3-border w3-margin", onclick="document.getElementById('addBookModal').style.display='block'") Добавить книгу
 
-        div(class="w3-container w3-center")
-            h1 Список книг
-        div(class="w3-container w3-center")
-            button(id="showAllBooks") Все книги
-            button(id="showInStockBooks") Книги в наличии
-            button(id="showExpiredBooks") Просроченные
-            br
-            button(id="addBookButton") Добавить книгу
-        div(class="w3-container w3-center", id="books-container")
-
-        script(src="/public/js/main.js")
+    div#addBookModal(class="w3-modal")
+        div(class="w3-modal-content")
+            div(class="w3-container w3-red")
+                h2 Добавление новой книги
+                span(onclick="document.getElementById('addBookModal').style.display='none'" class="w3-button w3-display-topright") &times;
+            form#newBookForm(class="w3-container")
+                p
+                    label Название книги
+                    input#newBookTitle(class="w3-input" type="text" required)
+                p
+                    label Автор
+                    input#newBookAuthor(class="w3-input" type="text" required)
+                p
+                    label Год издания
+                    input#newBookYear(class="w3-input" type="text" required)
+                p
+                    label Изображение обложки
+                    input#newBookImage(class="w3-input" type="text")
+                p
+                    input(type="submit" class="w3-btn w3-ripple w3-red w3-border w3-margin" value="Добавить")
+    div#addReaderModal(class="w3-modal")
+        div(class="w3-modal-content")
+            div(class="w3-container w3-green")
+                h2 Выдать книгу читателю
+                span(onclick="document.getElementById('addReaderModal').style.display='none'" class="w3-button w3-display-topright") &times;
+            form#addReaderForm(class="w3-container")
+                p
+                    label Имя читателя
+                    input#newReaderName(class="w3-input" type="text" required)
+                p
+                    label Дата возврата
+                    input#newExpirationDate(class="w3-input" type="date" required)
+                    input(type="submit" class="w3-btn w3-ripple w3-green w3-border w3-margin" value="Выдать книгу")
+    div#editBookModal(class="w3-modal")
+        div(class="w3-modal-content")
+            div(class="w3-container w3-orange")
+                h2 Редактирование книги
+                span(onclick="document.getElementById('editBookModal').style.display='none'" class="w3-button w3-display-topright") &times;
+            form#editBookForm(class="w3-container")
+                p
+                    label Название книги
+                    input#editBookTitle(class="w3-input" type="text" required)
+                p
+                    label Автор
+                    input#editBookAuthor(class="w3-input" type="text" required)
+                p
+                    label Год издания
+                    input#editBookYear(class="w3-input" type="text" required)
+                p
+                    label Изображение обложки
+                    input#editBookImage(class="w3-input" type="text")
+                p
+                    input(type="submit" class="w3-btn w3-ripple w3-orange w3-border w3-margin" value="Изменить")
+    div#books-container(class="w3-container")
